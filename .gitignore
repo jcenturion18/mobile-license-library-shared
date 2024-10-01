@@ -281,3 +281,6 @@ fabric.properties
 .history/
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#C++,Xcode,macOS,Kotlin,Windows,AndroidStudio,VisualStudioCode
+
+.idea/*
+.kotlin/*
