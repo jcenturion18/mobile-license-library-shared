@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.serialization)
     alias(libs.plugins.kotlinCocoapods)
+    id("maven-publish")
 }
 
 val libraryVersion: String by project
@@ -46,12 +47,20 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
         }
+    }
+
+    androidTarget {
+        publishLibraryVariants("release", "debug")
     }
 }
 
@@ -76,6 +85,6 @@ tasks.register("buildLibrary") {
 tasks.register<Exec>("publishingLibrary") {
     group = "Avenza Publishing"
     dependsOn("buildLibrary")
-    //dependsOn("publishToMavenLocal")
+    dependsOn("publishToMavenLocal")
     commandLine("../scripts/pushios.sh", libraryVersion)
 }

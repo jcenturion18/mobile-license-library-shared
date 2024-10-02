@@ -3,8 +3,9 @@ plugins {
     alias(libs.plugins.kotlinJvm) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinCocoapods) apply false
+    alias(libs.plugins.ktor) apply false
 }
 
 tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(layout.buildDirectory)
 }
