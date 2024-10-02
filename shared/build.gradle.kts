@@ -44,7 +44,7 @@ kotlin {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.core)
             implementation(libs.kotlinx.coroutines.core)
-
+            implementation(libs.kotlinx.serialization.json)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -56,7 +56,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.avenza.shared.shared"
+    namespace = "com.avenza.license"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -65,4 +65,17 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+}
+
+tasks.register("buildLibrary") {
+    group = "Avenza Build"
+    dependsOn("clean")
+    dependsOn("podPublishXCFramework")
+}
+
+tasks.register<Exec>("publishingLibrary") {
+    group = "Avenza Publishing"
+    dependsOn("buildLibrary")
+    //dependsOn("publishToMavenLocal")
+    commandLine("../scripts/pushios.sh", libraryVersion)
 }
